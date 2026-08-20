@@ -1,0 +1,52 @@
+{
+  "name": "voxora-desktop",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Voxora desktop voice and community chat",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "build": "tsc -b && vite build",
+    "dist:win": "pnpm run build && electron-builder --win portable",
+    "test:smoke": "node scripts/smoke.cjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dotenv": "latest",
+    "livekit-server-sdk": "latest",
+    "ws": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "concurrently": "latest",
+    "electron": "latest",
+    "electron-builder": "latest",
+    "livekit-client": "latest",
+    "lucide-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "wait-on": "latest"
+  },
+  "build": {
+    "appId": "com.voxora.desktop",
+    "productName": "Voxora",
+    "artifactName": "Voxora-${version}.${ext}",
+    "compression": "store",
+    "directories": { "output": "release" },
+    "files": ["dist/**/*", "electron/**/*", "assets/**/*", "package.json"],
+    "extraResources": [{ "from": ".env", "to": ".env" }],
+    "win": { "target": ["portable"], "icon": "assets/voxora-icon.ico", "signAndEditExecutable": true },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Voxora"
+    }
+  }
+}
